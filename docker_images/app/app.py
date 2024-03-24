@@ -6,6 +6,7 @@ import argparse
 
 
 app = Flask(__name__)
+BUCKET = os.environ.get("s3link")
 
 DBHOST = os.environ.get("DBHOST") or "localhost"
 DBUSER = os.environ.get("DBUSER") or "root"
@@ -18,9 +19,9 @@ db_conn = connections.Connection(
     host= DBHOST,
     port=DBPORT,
     user= DBUSER,
-    password= DBPWD, 
+    password= DBPWD,
     db= DATABASE
-    
+
 )
 output = {}
 table = 'employee';
@@ -50,8 +51,9 @@ def home():
 
 @app.route("/about", methods=['GET','POST'])
 def about():
-    return render_template('about.html', color=color_codes[COLOR])
-    
+    s3_image = BUCKET
+    return render_template('about.html', color=color_codes[COLOR], image=s3_image)
+
 @app.route("/addemp", methods=['POST'])
 def AddEmp():
     emp_id = request.form['emp_id']
@@ -60,12 +62,12 @@ def AddEmp():
     primary_skill = request.form['primary_skill']
     location = request.form['location']
 
-  
+
     insert_sql = "INSERT INTO employee VALUES (%s, %s, %s, %s, %s)"
     cursor = db_conn.cursor()
 
     try:
-        
+
         cursor.execute(insert_sql,(emp_id, first_name, last_name, primary_skill, location))
         db_conn.commit()
         emp_name = "" + first_name + " " + last_name
@@ -99,7 +101,7 @@ def FetchData():
         output["last_name"] = result[2]
         output["primary_skills"] = result[3]
         output["location"] = result[4]
-        
+
     except Exception as e:
         print(e)
 
@@ -110,7 +112,7 @@ def FetchData():
                            lname=output["last_name"], interest=output["primary_skills"], location=output["location"], color=color_codes[COLOR])
 
 if __name__ == '__main__':
-    
+
     # Check for Command Line Parameters for color
     parser = argparse.ArgumentParser()
     parser.add_argument('--color', required=False)
