@@ -31,4 +31,4 @@ export s3link=https://gp-clo835.s3.amazonaws.com/test/1.png
 ```
 ### Run the application
 
-```docker run -p 8080:8080  -e DBHOST=$DBHOST -e DBPORT=$DBPORT -e  DBUSER=$DBUSER -e DBPWD=$DBPWD -e s3link=$s3link  my_app```
+```docker run -p 8080:81  -e DBHOST=$DBHOST -e DBPORT=$DBPORT -e  DBUSER=$DBUSER -e DBPWD=$DBPWD -e s3link=$s3link  my_app```
