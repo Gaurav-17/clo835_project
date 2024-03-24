@@ -94,7 +94,7 @@ def FetchData():
     try:
         cursor.execute(select_sql,(emp_id))
         result = cursor.fetchone()
-        
+
         # Add No Employee found form
         output["emp_id"] = result[0]
         output["first_name"] = result[1]
