@@ -6,7 +6,7 @@ CLO835 - Final Group Project
 
 ## MYSQL DB Image
 
-```docker build -t my_db -f db/Dockerfile_mysql . ```
+```docker build -t my_db -f db/Dockerfile . ```
 
 
 
@@ -26,9 +26,10 @@ export DBPORT=3306
 export DBUSER=root
 export DATABASE=employees
 export DBPWD=pw
-export APP_COLOR=blue
-export s3link=https://gp-clo835.s3.amazonaws.com/test/1.png
+export S3_IMAGE_URI=https://gp-clo835.s3.amazonaws.com/test/1.png
+export GROUP_NAME=name
+export GROUP_SLOGAN=slogan
 ```
 ### Run the application
 
-```docker run -p 8080:81  -e DBHOST=$DBHOST -e DBPORT=$DBPORT -e  DBUSER=$DBUSER -e DBPWD=$DBPWD -e s3link=$s3link  my_app```
+```docker run -p 8080:81  -e DBHOST=$DBHOST -e DBPORT=$DBPORT -e  DBUSER=$DBUSER -e DBPWD=$DBPWD -e S3_IMAGE_URI=$S3_IMAGE_URI -e GROUP_NAME=$GROUP_NAME -e GROUP_SLOGAN=$GROUP_SLOGAN my_app```
