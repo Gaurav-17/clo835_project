@@ -8,7 +8,33 @@ on:
       - flask_app/app/**
 
 jobs:
+  tests:
+    name: Run App Code Unit Tests
+    runs-on: ubuntu-latest
+
+    steps:
+    - name: Checkout code
+      uses: actions/checkout@v2
+
+    - name: Set up Python
+      uses: actions/setup-python@v2
+      with:
+        python-version: '3.8'
+
+    - name: Install dependencies
+      run: |
+        cd flask_app/app/
+        ls -ltra
+        python -m pip install --upgrade pip
+        pip install -r requirements.txt
+
+    - name: Run unit tests
+      run: |
+        cd flask_app/app/
+        ls -ltra
+        python -m unittest discover -s . -p '*_test.py'
   build:
+    needs: tests
     name: Build Image
     runs-on: ubuntu-latest
     steps:
