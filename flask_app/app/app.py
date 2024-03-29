@@ -2,6 +2,7 @@ from flask import Flask, render_template, request
 from pymysql import connections
 import os
 
+from utils import get_key_from_s3_uri, get_bucket_name_from_s3_uri, download_image_from_s3, get_filename_with_extension_from_s3_uri
 
 app = Flask(__name__)
 
@@ -10,7 +11,7 @@ DBUSER = os.environ.get("DBUSER") or "root"
 DBPWD = os.environ.get("DBPWD") or "passwors"
 DATABASE = os.environ.get("DATABASE") or "employees"
 DBPORT = int(os.environ.get("DBPORT")) or 3306
-S3_IMAGE_URI = os.environ.get("S3_IMAGE_URI")
+S3_IMAGE_URI = os.environ.get("S3_IMAGE_URI") or "https://gp-clo835.s3.amazonaws.com/test/1.png"
 # Create a connection to the MySQL database
 db_conn = connections.Connection(
     host= DBHOST,
@@ -32,7 +33,7 @@ def about():
     return render_template('about.html', image=S3_IMAGE_URI)
 
 @app.route("/addemp", methods=['POST'])
-def AddEmp():
+def add_employee():
     emp_id = request.form['emp_id']
     first_name = request.form['first_name']
     last_name = request.form['last_name']
@@ -53,12 +54,12 @@ def AddEmp():
     return render_template('addempoutput.html', name=emp_name, image=S3_IMAGE_URI)
 
 @app.route("/getemp", methods=['GET', 'POST'])
-def GetEmp():
+def get_employee():
     return render_template("getemp.html", image=S3_IMAGE_URI)
 
 
 @app.route("/fetchdata", methods=['GET','POST'])
-def FetchData():
+def fech_data():
     emp_id = request.form['emp_id']
 
     output = {}
@@ -84,4 +85,9 @@ def FetchData():
                            lname=output["last_name"], interest=output["primary_skills"], location=output["location"], image=S3_IMAGE_URI)
 
 if __name__ == '__main__':
+    bucket = get_bucket_name_from_s3_uri(S3_IMAGE_URI)
+    key = get_key_from_s3_uri(S3_IMAGE_URI)
+    filename_with_extension = get_filename_with_extension_from_s3_uri(S3_IMAGE_URI)
+    output_file_path = f'static/${filename_with_extension}'
+    download_image_from_s3(bucket, key, output_file_path)
     app.run(host='0.0.0.0',port=81,debug=True)
