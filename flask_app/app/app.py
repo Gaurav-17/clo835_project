@@ -12,6 +12,8 @@ DBPWD = os.environ.get("DBPWD") or "passwors"
 DATABASE = os.environ.get("DATABASE") or "employees"
 DBPORT = int(os.environ.get("DBPORT")) or 3306
 S3_IMAGE_URI = os.environ.get("S3_IMAGE_URI") or "https://gp-clo835.s3.amazonaws.com/test/1.png"
+GROUP_NAME = os.environ.get("GROUP_NAME") or "Mexindian Squad"
+GROUP_SLOGAN = os.environ.get("GROUP_SLOGAN") or "Generic slogan"
 # Create a connection to the MySQL database
 db_conn = connections.Connection(
     host= DBHOST,
@@ -26,11 +28,11 @@ table = 'employee';
 
 @app.route("/", methods=['GET', 'POST'])
 def home():
-    return render_template('addemp.html', image=S3_IMAGE_URI)
+    return render_template('addemp.html', image=S3_IMAGE_URI, group_name=GROUP_NAME, group_slogan=GROUP_SLOGAN)
 
 @app.route("/about", methods=['GET','POST'])
 def about():
-    return render_template('about.html', image=S3_IMAGE_URI)
+    return render_template('about.html', image=S3_IMAGE_URI, group_name=GROUP_NAME, group_slogan=GROUP_SLOGAN)
 
 @app.route("/addemp", methods=['POST'])
 def add_employee():
@@ -51,11 +53,11 @@ def add_employee():
         cursor.close()
 
     print("all modification done...")
-    return render_template('addempoutput.html', name=emp_name, image=S3_IMAGE_URI)
+    return render_template('addempoutput.html', name=emp_name, image=S3_IMAGE_URI, group_name=GROUP_NAME, group_slogan=GROUP_SLOGAN)
 
 @app.route("/getemp", methods=['GET', 'POST'])
 def get_employee():
-    return render_template("getemp.html", image=S3_IMAGE_URI)
+    return render_template("getemp.html", image=S3_IMAGE_URI, group_name=GROUP_NAME, group_slogan=GROUP_SLOGAN)
 
 
 @app.route("/fetchdata", methods=['GET','POST'])
@@ -82,7 +84,7 @@ def fech_data():
         cursor.close()
 
     return render_template("getempoutput.html", id=output["emp_id"], fname=output["first_name"],
-                           lname=output["last_name"], interest=output["primary_skills"], location=output["location"], image=S3_IMAGE_URI)
+                           lname=output["last_name"], interest=output["primary_skills"], location=output["location"], image=S3_IMAGE_URI, group_name=GROUP_NAME, group_slogan=GROUP_SLOGAN)
 
 if __name__ == '__main__':
     bucket = get_bucket_name_from_s3_uri(S3_IMAGE_URI)

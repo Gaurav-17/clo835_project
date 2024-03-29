@@ -1,19 +1,19 @@
 <!DOCTYPE html>
 <html style="background-image: url({{ image }});">
 <head>
+	<title>{{ group_name }} - {{ group_slogan }}</title>
+</head>
+<body>
 <center>
 	<font color="DodgerBlue" size="5" style="font-family: avenir">
-		<body>
+		<div>
 			<h1>The employee {{ name }} wassuccessfully added to the database</h1><br>
 			<h2>The Employee has been added to the database</h2><br>
 			<h2>{{ name }}</h2><br>
 			<title>Add Emp Output</title>
 			<a href="{{ url_for('home') }}">Back</a>
-		</body>
+		</div>
 	</font>
 </center>
-</head>
-<body>
-
 </body>
 </html>
