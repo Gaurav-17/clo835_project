@@ -11,7 +11,7 @@ DBUSER = os.environ.get("DBUSER") or "root"
 DBPWD = os.environ.get("DBPWD") or "passwors"
 DATABASE = os.environ.get("DATABASE") or "employees"
 DBPORT = int(os.environ.get("DBPORT")) or 3306
-S3_IMAGE_URI = os.environ.get("S3_IMAGE_URI") or "https://gp-clo835.s3.amazonaws.com/test/1.png"
+S3_IMAGE_URI = os.environ.get("S3_IMAGE_URI") or "s3://clo835testbucketerccardiel/unpath/bg_1.jpg"
 GROUP_NAME = os.environ.get("GROUP_NAME") or "Mexindian Squad"
 GROUP_SLOGAN = os.environ.get("GROUP_SLOGAN") or "Generic slogan"
 # Create a connection to the MySQL database
@@ -24,15 +24,16 @@ db_conn = connections.Connection(
 )
 output = {}
 table = 'employee';
+image_name = get_filename_with_extension_from_s3_uri(S3_IMAGE_URI)
 
 
 @app.route("/", methods=['GET', 'POST'])
 def home():
-    return render_template('addemp.html', image=S3_IMAGE_URI, group_name=GROUP_NAME, group_slogan=GROUP_SLOGAN)
+    return render_template('addemp.html', image_name=image_name, group_name=GROUP_NAME, group_slogan=GROUP_SLOGAN)
 
 @app.route("/about", methods=['GET','POST'])
 def about():
-    return render_template('about.html', image=S3_IMAGE_URI, group_name=GROUP_NAME, group_slogan=GROUP_SLOGAN)
+    return render_template('about.html', image_name=image_name, group_name=GROUP_NAME, group_slogan=GROUP_SLOGAN)
 
 @app.route("/addemp", methods=['POST'])
 def add_employee():
@@ -53,11 +54,11 @@ def add_employee():
         cursor.close()
 
     print("all modification done...")
-    return render_template('addempoutput.html', name=emp_name, image=S3_IMAGE_URI, group_name=GROUP_NAME, group_slogan=GROUP_SLOGAN)
+    return render_template('addempoutput.html', name=emp_name, image_name=image_name, group_name=GROUP_NAME, group_slogan=GROUP_SLOGAN)
 
 @app.route("/getemp", methods=['GET', 'POST'])
 def get_employee():
-    return render_template("getemp.html", image=S3_IMAGE_URI, group_name=GROUP_NAME, group_slogan=GROUP_SLOGAN)
+    return render_template("getemp.html", image_name=image_name, group_name=GROUP_NAME, group_slogan=GROUP_SLOGAN)
 
 
 @app.route("/fetchdata", methods=['GET','POST'])
@@ -84,12 +85,11 @@ def fech_data():
         cursor.close()
 
     return render_template("getempoutput.html", id=output["emp_id"], fname=output["first_name"],
-                           lname=output["last_name"], interest=output["primary_skills"], location=output["location"], image=S3_IMAGE_URI, group_name=GROUP_NAME, group_slogan=GROUP_SLOGAN)
+                           lname=output["last_name"], interest=output["primary_skills"], location=output["location"], image_name=image_name, group_name=GROUP_NAME, group_slogan=GROUP_SLOGAN)
 
 if __name__ == '__main__':
     bucket = get_bucket_name_from_s3_uri(S3_IMAGE_URI)
     key = get_key_from_s3_uri(S3_IMAGE_URI)
-    filename_with_extension = get_filename_with_extension_from_s3_uri(S3_IMAGE_URI)
-    output_file_path = f'static/${filename_with_extension}'
+    output_file_path = f"static/{image_name}"
     download_image_from_s3(bucket, key, output_file_path)
     app.run(host='0.0.0.0',port=81,debug=True)

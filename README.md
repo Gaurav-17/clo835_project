@@ -19,17 +19,20 @@ CLO835 - Final Group Project
 
 ### Setting env variables for app docker container
 ```
-export DBHOST=172.17.0.2
+export DBHOST=172.XX.0.2
 export DBPORT=3306
 ```
 ```
 export DBUSER=root
 export DATABASE=employees
 export DBPWD=pw
-export S3_IMAGE_URI=https://gp-clo835.s3.amazonaws.com/test/1.png
+export S3_IMAGE_URI=s3://clo835testbucketerccardiel/unpath/bg_1.jpg
 export GROUP_NAME=name
 export GROUP_SLOGAN=slogan
+export AWS_ACCESS_KEY_ID=XXX
+export AWS_SECRET_ACCESS_KEY=XXX
+export AWS_SESSION_TOKEN=XXX
 ```
 ### Run the application
 
-```docker run -p 8080:81  -e DBHOST=$DBHOST -e DBPORT=$DBPORT -e  DBUSER=$DBUSER -e DBPWD=$DBPWD -e S3_IMAGE_URI=$S3_IMAGE_URI -e GROUP_NAME=$GROUP_NAME -e GROUP_SLOGAN=$GROUP_SLOGAN my_app```
+```docker run -p 8080:81  -e DBHOST=$DBHOST -e DBPORT=$DBPORT -e  DBUSER=$DBUSER -e DBPWD=$DBPWD -e S3_IMAGE_URI=$S3_IMAGE_URI -e GROUP_NAME=$GROUP_NAME -e GROUP_SLOGAN=$GROUP_SLOGAN -e AWS_ACCESS_KEY_ID=$AWS_ACCESS_KEY_ID -e AWS_SECRET_ACCESS_KEY=$AWS_SECRET_ACCESS_KEY -e AWS_SESSION_TOKEN=$AWS_SESSION_TOKEN my_app```
