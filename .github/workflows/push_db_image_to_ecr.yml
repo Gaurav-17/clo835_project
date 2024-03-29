@@ -3,7 +3,7 @@ name: Build and Push mysqldb docker image to ECR
 on:
   workflow_dispatch:
   push:
-    branches: [ "master", "dev" ] # TODO: Remove dev branch once we are done
+    branches: [ "prod", "dev" ] # TODO: Remove dev branch once we are done
     paths: 
       - flask_app/db/**
 
