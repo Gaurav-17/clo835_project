@@ -1,7 +1,7 @@
 apiVersion: apps/v1
 kind: Deployment
 metadata:
-  namespace: sqldb
+  namespace: final
   name: db-deployment
   labels:
     app: mysql
@@ -18,9 +18,16 @@ spec:
       containers:
       - name: db
         image: 334109771446.dkr.ecr.us-east-1.amazonaws.com/ass1-prod-db:v14.0
-        env:
+        env:- name: MYSQL_USER
+            valueFrom:
+              secretKeyRef:
+                name: db-sec
+                key: username
         - name: MYSQL_ROOT_PASSWORD
-          value: password
+            valueFrom:
+              secretKeyRef:
+                name: db-sec
+                key: password
         ports:
         - containerPort: 3306
           name: mysql
