@@ -18,35 +18,29 @@ spec:
       containers:
       - name: db
         image: 334109771446.dkr.ecr.us-east-1.amazonaws.com/mysqldb:latest
-      imagePullSecrets:
-      - name: db-ecr  
         env:
         - name: MYSQL_USER
-            valueFrom:
-              secretKeyRef:
-                name: db-sec
-                key: username
+          valueFrom:
+            secretKeyRef:
+              name: db-sec
+              key: username
         - name: MYSQL_ROOT_PASSWORD
-            valueFrom:
-              secretKeyRef:
-                name: db-sec
-                key: password
+          valueFrom:
+            secretKeyRef:
+              name: db-sec
+              key: password
         ports:
         - containerPort: 3306
           name: mysql
         volumeMounts:
         - name: mysql-data
           mountPath: /var/lib/mysql
-        resources: {}
+      imagePullSecrets:
+      - name: db-ecr
       dnsPolicy: ClusterFirst
       restartPolicy: Always
-  volumeClaimTemplates:
-  - metadata:
-      name: mysql-data
-    spec:
-      resources:
-        requests:
-          storage: 2Gi
-      accessModes:
-      - ReadWriteOnce
-      storageClassName: gp2-csi
+      volumes:
+      - name: mysql-data
+        persistentVolumeClaim:
+          claimName: mysql-data
+   
