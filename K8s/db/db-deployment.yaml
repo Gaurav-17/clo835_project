@@ -17,8 +17,11 @@ spec:
     spec:
       containers:
       - name: db
-        image: 334109771446.dkr.ecr.us-east-1.amazonaws.com/ass1-prod-db:v14.0
-        env:- name: MYSQL_USER
+        image: 334109771446.dkr.ecr.us-east-1.amazonaws.com/mysqldb:latest
+      imagePullSecrets:
+      - name: db-ecr  
+        env:
+        - name: MYSQL_USER
             valueFrom:
               secretKeyRef:
                 name: db-sec
