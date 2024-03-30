@@ -19,11 +19,11 @@ spec:
       - name: db
         image: 334109771446.dkr.ecr.us-east-1.amazonaws.com/mysqldb:latest
         env:
-        - name: MYSQL_USER
-          valueFrom:
-            secretKeyRef:
-              name: db-sec
-              key: username
+        #- name: MYSQL_USER
+         # valueFrom:
+          #  secretKeyRef:
+           #   name: db-sec
+            #  key: username
         - name: MYSQL_ROOT_PASSWORD
           valueFrom:
             secretKeyRef:
