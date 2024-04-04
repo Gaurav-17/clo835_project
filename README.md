@@ -36,3 +36,57 @@ export AWS_SESSION_TOKEN=XXX
 ### Run the application
 
 ```docker run -p 8080:81  -e DBHOST=$DBHOST -e DBPORT=$DBPORT -e  DBUSER=$DBUSER -e DBPWD=$DBPWD -e S3_IMAGE_URI=$S3_IMAGE_URI -e GROUP_NAME=$GROUP_NAME -e GROUP_SLOGAN=$GROUP_SLOGAN -e AWS_ACCESS_KEY_ID=$AWS_ACCESS_KEY_ID -e AWS_SECRET_ACCESS_KEY=$AWS_SECRET_ACCESS_KEY -e AWS_SESSION_TOKEN=$AWS_SESSION_TOKEN my_app```
+
+
+
+### K8s
+
+`eksctl create cluster -f eks_config.yaml`
+
+`eksctl delete cluster --name clo835 --region us-east-1` 
+
+
+Commands:
+
+- create a ns
+
+`k create ns final`
+
+
+
+
+
+## Database:
+
+- Secrets for mysql username and pass
+- Imagepull secret to pull ECR image
+- PersistentVolumeClaim based on gp2 default StorageClass: 
+o Size: 2Gi
+o AccessMode: ReadWriteOnce
+
+- Deployment of MySQL DB with 1 replica and volume based on PVC
+- Service that exposes MySQL DB to the Flask application.
+
+Commands:
+
+`kubectl create secret generic db-sec --from-file=./secrets/ -n final`
+`kubectl create secret generic db-ecr --from-file=.dockerconfigjson=/home/ec2-user/.docker/config.json --type=kubernetes.io/dockerconfigjson -n final`
+
+`kubectl apply -f storageclass.yaml`
+`kubectl apply -f pvc.yaml -n final`
+`kubectl apply -f db-deployment.yaml -n final`
+`kubectl apply -f db-service.yaml -n final`
+
+## App
+
+Configmap for bg image URL
+Secrets for AWS credentails to allow s3 private bucket access
+Imagepull secret to pull ECR image
+Deployment of Flask application with 1 replica
+Service that exposes the Flask application to the Internet users and has a stable endpoint
+
+
+
+
+Create serviceaccount named “clo835”
+K8s role (Role or ClusterRole, whichever is appropriate) “CLO835” with permissions to create and read namespaces. Create a binding (RoleBinding or ClusterRoleBinding, whichever appropriate) that binds the “CLO835” role to the clo835 serviceaccount.
