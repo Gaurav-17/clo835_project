@@ -70,8 +70,7 @@ o AccessMode: ReadWriteOnce
 Commands:
 
 - `kubectl create secret generic db-sec --from-file=./secrets/ -n final`
-- ```sh
-kubectl create secret generic db-ecr --from-file=.dockerconfigjson=/home/ec2-user/.docker/config.json --type=kubernetes.io dockerconfigjson -n final```
+- ```kubectl create secret generic db-ecr --from-file=.dockerconfigjson=/home/ec2-user/.docker/config.json --type=kubernetes.io dockerconfigjson -n final```
 
 - `kubectl apply -f storageclass.yaml`
 - `kubectl apply -f pvc.yaml -n final`
