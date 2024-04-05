@@ -1,0 +1,11 @@
+apiVersion: v1
+kind: ConfigMap
+metadata:
+  name: webapp-config
+  namespace: final
+data:
+  S3_IMAGE_URI: #S3 URI in the format:"s3://clo835testbucketerccardiel/unpath/bg_1.jpg"
+  GROUP_NAME: "Mexindian Squad"
+  GROUP_SLOGAN: "Generic slogan"
+  DBHOST: "db-service.final.svc.cluster.local"
+  DBPORT: "3306"

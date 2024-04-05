@@ -53,29 +53,38 @@ Commands:
 `k create ns final`
 
 
-
-
-
-## Database:
-
-- Secrets for mysql username and pass
 - Imagepull secret to pull ECR image
-- PersistentVolumeClaim based on gp2 default StorageClass: 
-o Size: 2Gi
-o AccessMode: ReadWriteOnce
 
-- Deployment of MySQL DB with 1 replica and volume based on PVC
-- Service that exposes MySQL DB to the Flask application.
+## Initial Secrets
 
-Commands:
-
-- `kubectl create secret generic db-sec --from-file=./secrets/ -n final`
 - ```kubectl create secret generic db-ecr --from-file=.dockerconfigjson=/home/ec2-user/.docker/config.json --type=kubernetes.io dockerconfigjson -n final```
+
+## Database
+
+### Secrets
+Secrets for mysql username and pass
+- `kubectl create secret generic db-sec --from-file=./db/secrets/ -n final`
+
+### Commands:
 
 - `kubectl apply -f storageclass.yaml`
 - `kubectl apply -f pvc.yaml -n final`
-- `kubectl apply -f db-deployment.yaml -n final`
-- `kubectl apply -f db-service.yaml -n final`
+- `kubectl apply -f deployment.yaml -n final`
+- `kubectl apply -f service.yaml -n final`
+
+
+## WebApp:
+
+### Secrets
+Add AWS academy temporary credentials in secrets folder.
+
+- `kubectl create secret generic webapp-sec --from-file=./app/secrets/ -n final`
+
+### Commands:
+
+- `kubectl apply -f configmap.yaml -n final`
+- `kubectl apply -f deployment.yaml -n final`
+- `kubectl apply -f service.yaml -n final`
 
 ## App
 

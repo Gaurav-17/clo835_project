@@ -1,0 +1,38 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: webapp
+  namespace: final
+  labels:
+    app: employees
+spec:
+  replicas: 1
+  selector:
+    matchLabels:
+      app: employees
+  template:
+    metadata:
+      labels:
+        app: employees
+    spec:
+      containers:
+        - name: webapp-container
+          image: #ECR Image URI:'248647995044.dkr.ecr.us-east-1.amazonaws.com/webapp:beffccb'
+          envFrom:
+            - configMapRef:
+                name: webapp-config
+            - secretRef:
+                name: webapp-sec
+          env:
+            - name: DBPWD
+              valueFrom:
+                secretKeyRef:
+                  name: db-sec
+                  key: password
+            - name: DBUSER
+              valueFrom:
+                secretKeyRef:
+                  name: db-sec
+                  key: username
+          ports:
+            - containerPort: 81
