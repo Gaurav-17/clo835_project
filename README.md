@@ -68,9 +68,9 @@ Secrets for mysql username and pass
 ### Commands:
 
 - `kubectl apply -f storageclass.yaml`
-- `kubectl apply -f pvc.yaml -n final`
-- `kubectl apply -f deployment.yaml -n final`
-- `kubectl apply -f service.yaml -n final`
+- `kubectl apply -f pvc.yaml`
+- `kubectl apply -f deployment.yaml`
+- `kubectl apply -f service.yaml`
 
 
 ## WebApp:
@@ -82,9 +82,9 @@ Add AWS academy temporary credentials in secrets folder.
 
 ### Commands:
 
-- `kubectl apply -f configmap.yaml -n final`
-- `kubectl apply -f deployment.yaml -n final`
-- `kubectl apply -f service.yaml -n final`
+- `kubectl apply -f configmap.yaml`
+- `kubectl apply -f deployment.yaml`
+- `kubectl apply -f service.yaml`
 
 ## App
 
