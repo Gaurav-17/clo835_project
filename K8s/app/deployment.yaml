@@ -15,6 +15,7 @@ spec:
       labels:
         app: employees
     spec:
+      serviceAccountName: clo835
       containers:
         - name: webapp-container
           image: #ECR Image URI:'248647995044.dkr.ecr.us-east-1.amazonaws.com/webapp:beffccb'

@@ -1,0 +1,10 @@
+apiVersion: v1
+kind: Pod
+metadata: 
+  name: pod-with-service-account
+  namespace: final
+spec:
+  serviceAccountName: clo835
+  containers:
+  - name: ambassador
+    image: luksa/kubectl-proxy

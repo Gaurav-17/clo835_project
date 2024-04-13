@@ -16,6 +16,7 @@ spec:
         app: mysql
     spec:
       containers:
+        serviceAccountName: clo835
       - name: db
         image: 334109771446.dkr.ecr.us-east-1.amazonaws.com/mysqldb:latest
         env:
