@@ -57,7 +57,7 @@ Commands:
 
 ## Initial Secrets
 
-- ```kubectl create secret generic db-ecr --from-file=.dockerconfigjson=/home/ec2-user/.docker/config.json --type=kubernetes.io dockerconfigjson -n final```
+- ```kubectl create secret generic ecr-secret --from-file=.dockerconfigjson=/home/ec2-user/.docker/config.json --type=kubernetes.io dockerconfigjson -n final```
 
 ## Database
 

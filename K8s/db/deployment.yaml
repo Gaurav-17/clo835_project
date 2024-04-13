@@ -36,7 +36,7 @@ spec:
         - name: mysql-data
           mountPath: /var/lib/mysql
       imagePullSecrets:
-      - name: db-ecr
+      - name: ecr-sec
       dnsPolicy: ClusterFirst
       restartPolicy: Always
       volumes:
