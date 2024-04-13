@@ -29,8 +29,9 @@ def get_filename_with_extension_from_s3_uri(s3_uri):
 def download_image_from_s3(bucket_name, key, local_file_path):
     try:
         s3 = boto3.client('s3')
+        print(f"Downloading image from: {bucket_name}/{key}")
         s3.download_file(bucket_name, key, local_file_path)
-        print(f"Image downloaded successfully to {local_file_path}")
+        print(f"Image downloaded successfully to: {local_file_path}")
         return True
     except Exception as e:
         print(f"Error downloading image from S3: {e}")
