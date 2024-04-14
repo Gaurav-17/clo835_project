@@ -18,6 +18,9 @@ spec:
       serviceAccountName: clo835
       containers:
         - name: webapp-container
+          resources:
+            requests:
+              cpu: "100m"
           image: #ECR Image URI:'248647995044.dkr.ecr.us-east-1.amazonaws.com/webapp:beffccb'
           envFrom:
             - configMapRef:
