@@ -1,0 +1,64 @@
+name: Build and Push webapp docker image to ECR
+
+on:
+  workflow_dispatch:
+  push:
+    branches: [ "prod", "dev" ] # TODO: Remove dev branch once we are done
+    paths: 
+      - flask_app/app/**
+
+jobs:
+  tests:
+    name: Run App Code Unit Tests
+    runs-on: ubuntu-latest
+
+    steps:
+    - name: Checkout code
+      uses: actions/checkout@v2
+
+    - name: Set up Python
+      uses: actions/setup-python@v2
+      with:
+        python-version: '3.8'
+
+    - name: Install dependencies
+      run: |
+        cd flask_app/app/
+        ls -ltra
+        python -m pip install --upgrade pip
+        pip install -r requirements.txt
+
+    - name: Run unit tests
+      run: |
+        cd flask_app/app/
+        ls -ltra
+        python -m unittest discover -s . -p '*_test.py'
+  build:
+    needs: tests
+    name: Build Image
+    runs-on: ubuntu-latest
+    steps:
+      - name: Check out code
+        uses: actions/checkout@v2
+      - name: Login to Amazon ECR
+        id: login-ecr
+        uses: aws-actions/amazon-ecr-login@v1
+        env:
+          AWS_ACCESS_KEY_ID: '${{ secrets.AWS_ACCESS_KEY_ID }}'
+          AWS_SECRET_ACCESS_KEY: '${{ secrets.AWS_SECRET_ACCESS_KEY }}'
+          AWS_SESSION_TOKEN: '${{ secrets.AWS_SESSION_TOKEN }}'
+          AWS_REGION: us-east-1
+      - name: Set IMAGE_TAG to commit hash
+        run: |
+          echo "IMAGE_TAG=$(git rev-parse --short HEAD)" >> $GITHUB_ENV
+      - name: Build webapp image and push it to ECR
+        env:
+          ECR_REGISTRY: '${{ steps.login-ecr.outputs.registry }}'
+          ECR_REPOSITORY: webapp
+          IMAGE_TAG: ${{ env.IMAGE_TAG }}
+        run: |
+          cd flask_app/app/
+          ls -ltra
+          docker build -t $ECR_REGISTRY/$ECR_REPOSITORY:$IMAGE_TAG -f Dockerfile .
+          docker ps
+          docker push $ECR_REGISTRY/$ECR_REPOSITORY:$IMAGE_TAG
